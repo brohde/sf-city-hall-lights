@@ -87,10 +87,17 @@ function findTodaysString(colorStrings) {
         let dateStr = splitString.shift();
         let textPartString = splitString.join(' ');
 
-        console.log("checking", dateStr);
+        let dateSplit = dateStr.split('/');
+        let month = dateSplit[0];
+        let day = dateSplit[1];
 
-        let momentDate = moment(dateStr);
-        momentDate.set('year', moment().year());
+        month = month-1; //moment months are 0-indexed
+
+        // console.log("checking", month, day);
+
+        let momentDate = moment().month(month).date(day);
+
+        // console.log(momentDate.format());
 
         if (momentDate.isSame(moment(), 'day')) {
             today = colorString;
