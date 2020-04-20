@@ -20,7 +20,7 @@ const LIGHTS_HEADING = `This Month's Lighting Events`;
 
 const mockData = async () => {
     return new Promise((resolve, reject) => {
-        fs.readFile('output.html', function (err, data) {
+        fs.readFile('april.html', 'utf8', function (err, data) {
             if (err)
                 throw err;
         
