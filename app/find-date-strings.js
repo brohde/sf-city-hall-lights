@@ -6,6 +6,8 @@ const POSSIBLE_COLORS = [
     'blue',
     'white',
     'green',
+    'purple',
+    'gold',
 ];
 
 function findDateStrings(html) {
