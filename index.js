@@ -1,3 +1,5 @@
+/* Heroku entrypoint */
+
 const express = require('express');
 const request = require('request');
 
