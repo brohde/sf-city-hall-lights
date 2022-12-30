@@ -25,6 +25,16 @@ git push heroku <brand-name>:master
 Deploying a test dyno (dev server)
 # TODO
 
+Notion Token
+https://www.notion.so/my-integrations
+https://www.notion.so/my-integrations/internal/ac0d3fd3354349d0883d7706b562cec3
+
+Locally, you may use `.env` to define enviromment variables that will be set at run time.
+
+```
+NOTION_TOKEN=Internal Integration Token
+```
+
 Services
 
 web - API
