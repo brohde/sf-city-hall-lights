@@ -8,19 +8,14 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "web": "npm start",
-    "watch": "nodemon --watch",
+    "web": "node web/index.js",
+    "watch": "nodemon --watch . web/index.js",
     "test": "mocha"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.3",
-    "doasync": "^2.0.1",
     "express": "^4.17.1",
-    "fs": "^0.0.1-security",
-    "moment": "^2.24.0",
     "request": "^2.88.2"
   },
   "devDependencies": {
