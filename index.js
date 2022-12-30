@@ -14,7 +14,7 @@ const {
     hasDate,
     findColorStrings,
     findTodaysString
-} = require('./app/find-date-strings.js');
+} = require('./web/find-date-strings.js');
 
 const LIGHTS_URL = 'https://sfgov.org/cityhall/lighting';
 const LIGHTS_HEADING = `This Month's Lighting Events`;
@@ -22,7 +22,7 @@ const LIGHTS_HEADING = `This Month's Lighting Events`;
 
 const mockData = async () => {
     return new Promise((resolve, reject) => {
-        fs.readFile('april.html', 'utf8', function (err, data) {
+        fs.readFile('parser/mockdata/april.html', 'utf8', function (err, data) {
             if (err)
                 throw err;
         
@@ -76,6 +76,8 @@ const app = express();
 app.get('/', async (req, res) => {
     const data = await mockData();
     const output = parseData(data);
+
+    console.log('hello!');
 
     res.send(output);
 });
