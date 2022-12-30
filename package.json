@@ -9,6 +9,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "web": "npm start",
     "watch": "nodemon --watch",
     "test": "mocha"
   },
