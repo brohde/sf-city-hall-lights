@@ -7,12 +7,14 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
+const db = require('../db');
+
 app.get('/', async (req, res) => {
-    const output = "testing";
+    const users = await db.lights();
 
-    console.log('hello!');
+    console.log(users);
 
-    res.send(output);
+    res.send(users);
 });
 
 app.listen(PORT, () => console.log(`Example app listening at http://localhost:${PORT}`))
