@@ -2,7 +2,7 @@ import { Client, APIErrorCode } from "@notionhq/client";
 import { PageObjectResponse, QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
 import moment from 'moment';
 
-export const TODAY = moment().format('YYYY-MM-DD');
+export const TODAY = () => moment().format('YYYY-MM-DD');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -59,22 +59,69 @@ async function api(date: string): Promise<QueryDatabaseResponse> {
 // Expose for testing
 export const _api = api;
 
+interface MultiSelect {
+  name: string
+};
+
+type FormattedResponse = {
+  colors?: string[],
+  description?: string
+};
+
 /**
  * Format QueryDatabaseResponse to ShortcutsResponse to expose only the data we need
  * to make navigating it in iOS Shortcuts easier.
  * @param response 
  * @returns Object
  */
-function format(response: Object) {
-  return response;
+function format(response: QueryDatabaseResponse) {
+  let formattedResponse: FormattedResponse = {};
+
+  if (!("results" in response)) {
+    formattedResponse;
+  };
+
+  if (!response.results.length) {
+    return formattedResponse;
+  }
+
+  const page = response.results[0];
+
+  if (!("properties" in page)) {
+    return formattedResponse
+  }
+
+  const properties = page.properties;
+
+  // Colors
+  let colors: string[] = [];
+
+  if ("Colors" in properties && "multi_select" in properties.Colors) {
+    const multi_select = properties.Colors.multi_select;
+    colors = multi_select.map((item) => item.name)
+  }
+
+  // Description
+  let description: string = '';;
+
+  if ("Description" in properties && "title" in properties.Description) {
+    try {
+      description = properties.Description.title[0].plain_text;
+    } catch(e) {};
+
+  }
+
+  formattedResponse = {
+    colors,
+    description
+  };
+
+  console.log('colors', colors);
+  console.log('description', description);
+
+  return formattedResponse;
+
   
-  console.log('*** RESPONSE', response);
-
-  // const page = response.results[0] as PageObjectResponse;
-  // const colorsRaw = page.properties.Colors['multi_select'];
-
-  // const colors = page.properties['Colors']['multi_select'].map( data => data.name);
-  // console.log('**** COLORS', colors);
 
   const json = {
     "status": "ok",
@@ -96,7 +143,7 @@ export const _format = format;
  * Reads from Notion schedule page 
  * @returns 
  */
-export async function get(date: string = TODAY) {
+export async function get(date: string = TODAY()) {
   const response = await api(date);
   const formattedResponse = format(response);
   return formattedResponse;

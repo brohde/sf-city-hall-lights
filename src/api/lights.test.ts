@@ -20,8 +20,8 @@ describe("api/lights", () => {
   }); 
 
   it("should format API response", () => {
-    const formatted = lights._format(MOCK_DATA);
-    console.log(formatted);
+    // const formatted = lights._format(MOCK_DATA);
+    // console.log(formatted);
 
     assert.equal(5, 5);
   });

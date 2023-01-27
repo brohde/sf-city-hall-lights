@@ -12,8 +12,8 @@ heroku git remote -a sf-city-hall-lights
 
 nvm use #TODO
 
-npm run watch (live reload mode)
-npm run web (regular dev mode)
+yarn run watch (live reload mode)
+yarn run web (regular dev mode)
     # Should mirror heroku local 
 
 Deployment to prod
