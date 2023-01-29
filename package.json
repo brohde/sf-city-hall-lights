@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node build/web/index.js",
+    "start": "node build/index.js",
     "prod": "npm run build && npm run start",
     "watch": "nodemon",
     "test": "mocha -r ts-node/register 'src/**/*.test.ts'"

@@ -116,23 +116,7 @@ function format(response: QueryDatabaseResponse) {
     description
   };
 
-  console.log('colors', colors);
-  console.log('description', description);
-
   return formattedResponse;
-
-  
-
-  const json = {
-    "status": "ok",
-    "data": {
-        "colors": ['red', 'white', 'blue'],
-        "description": "in recognition of the City Hall Voting Center Weekend Hours: 10 AM to 4 PM"
-    },
-    "say": "The colors are {$colors}, {$description}"
-  };
-
-  return json;
 }
 
 // Expose for testing
