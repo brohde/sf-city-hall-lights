@@ -1,8 +1,5 @@
 import { Client, APIErrorCode } from "@notionhq/client";
 import { PageObjectResponse, QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
-import moment from 'moment';
-
-export const TODAY = () => moment().format('YYYY-MM-DD');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -23,19 +20,13 @@ const notion = new Client({
   auth: NOTION_TOKEN
 });
 
-interface ShortcutsResponse {
-  date: string,
-  colors: string[],
-  description: string
-}
-
 /**
  * Query Notion page NOTION_LIGHTS_DATABASE 
  * 
  * @param date 'YYYY-MM-DD'
  * @returns Promise<QueryDatabaseResponse>
  */
-async function api(date: string): Promise<QueryDatabaseResponse> {
+export async function getScheduleRow(date: string): Promise<QueryDatabaseResponse> {
   const response = await notion.databases.query({
     database_id: NOTION_LIGHTS_DATABASE as string,
     sorts: [
@@ -55,80 +46,51 @@ async function api(date: string): Promise<QueryDatabaseResponse> {
   return response;
 }
 
-
-// Expose for testing
-export const _api = api;
-
-interface MultiSelect {
-  name: string
-};
-
-type FormattedResponse = {
-  colors?: string[],
-  description?: string
+export type CleanedScheduleRow = {
+  colors: string[],
+  description: string
 };
 
 /**
- * Format QueryDatabaseResponse to ShortcutsResponse to expose only the data we need
- * to make navigating it in iOS Shortcuts easier.
+ * Clean the QueryDatabaseResponse to return a simpler structure.
  * @param response 
- * @returns Object
+ * @returns ScheduleRow
  */
-function format(response: QueryDatabaseResponse) {
-  let formattedResponse: FormattedResponse = {};
+export function cleanScheduleRow(response: QueryDatabaseResponse) {
+  let data: CleanedScheduleRow = {
+    colors: [],
+    description: ''
+  };
 
   if (!("results" in response)) {
-    formattedResponse;
+    return data;
   };
 
   if (!response.results.length) {
-    return formattedResponse;
+    return data;
   }
 
   const page = response.results[0];
 
   if (!("properties" in page)) {
-    return formattedResponse
+    return data;
   }
 
   const properties = page.properties;
 
   // Colors
-  let colors: string[] = [];
-
   if ("Colors" in properties && "multi_select" in properties.Colors) {
     const multi_select = properties.Colors.multi_select;
-    colors = multi_select.map((item) => item.name)
+    data.colors = multi_select.map((item) => item.name)
   }
 
   // Description
-  let description: string = '';;
-
   if ("Description" in properties && "title" in properties.Description) {
     try {
-      description = properties.Description.title[0].plain_text;
+      data.description = properties.Description.title[0].plain_text;
     } catch(e) {};
 
   }
 
-  formattedResponse = {
-    colors,
-    description
-  };
-
-  return formattedResponse;
-}
-
-// Expose for testing
-export const _format = format;
-
-
-/**
- * Reads from Notion schedule page 
- * @returns 
- */
-export async function get(date: string = TODAY()) {
-  const response = await api(date);
-  const formattedResponse = format(response);
-  return formattedResponse;
+  return data;
 }

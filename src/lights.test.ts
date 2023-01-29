@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import { json } from "express";
-import * as lights from "./lights";
+import * as NotionApi from "./NotionApi";
 
 import * as MOCK_DATA from './lights-response-mock-data.json';
 
@@ -13,7 +13,7 @@ describe("api/lights", () => {
   // TODO: SHould we mock the call here? 
 
   it(`should find test row ${TEST_DATE_EXISTS}`, async () => {
-    const data = await lights._api(TEST_DATE_EXISTS);
+    const data = await NotionApi.getScheduleRow(TEST_DATE_EXISTS);
     console.log(data);
     // const result = addition(2, 3);
     // assert.equal(result, 5);
