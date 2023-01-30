@@ -1,5 +1,6 @@
 import { Client, APIErrorCode } from "@notionhq/client";
 import { PageObjectResponse, QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
+import moment from 'moment';
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -20,13 +21,15 @@ const notion = new Client({
   auth: NOTION_TOKEN
 });
 
+const TODAY = () => moment().format('YYYY-MM-DD');
+
 /**
  * Query Notion page NOTION_LIGHTS_DATABASE 
  * 
  * @param date 'YYYY-MM-DD'
  * @returns Promise<QueryDatabaseResponse>
  */
-export async function getScheduleRow(date: string): Promise<QueryDatabaseResponse> {
+export async function getScheduleRow(date: string = TODAY()): Promise<QueryDatabaseResponse> {
   const response = await notion.databases.query({
     database_id: NOTION_LIGHTS_DATABASE as string,
     sorts: [
@@ -93,4 +96,8 @@ export function cleanScheduleRow(response: QueryDatabaseResponse) {
   }
 
   return data;
+}
+
+export function sum(a: number, b: number) {
+  return a + b;
 }
