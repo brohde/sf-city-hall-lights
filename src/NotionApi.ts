@@ -1,25 +1,6 @@
-import { Client, APIErrorCode } from "@notionhq/client";
 import { PageObjectResponse, QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
+import { Client, NOTION_LIGHTS_DATABASE } from "./NotionApiClient";
 import moment from 'moment';
-
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
-
-const NOTION_LIGHTS_DATABASE = process.env.NOTION_LIGHTS_DATABASE;
-const NOTION_TOKEN = process.env.NOTION_TOKEN;
-
-if (!NOTION_LIGHTS_DATABASE) {
-  throw new Error('NOTION_LIGHTS_DATABASE environment variable not set.');
-}
-
-if (!NOTION_TOKEN) {
-  throw new Error('NOTION_TOKEN environment variable not set.');
-}
-
-const notion = new Client({
-  auth: NOTION_TOKEN
-});
 
 const TODAY = () => moment().format('YYYY-MM-DD');
 
@@ -30,7 +11,7 @@ const TODAY = () => moment().format('YYYY-MM-DD');
  * @returns Promise<QueryDatabaseResponse>
  */
 export async function getScheduleRow(date: string = TODAY()): Promise<QueryDatabaseResponse> {
-  const response = await notion.databases.query({
+  const response = await Client.databases.query({
     database_id: NOTION_LIGHTS_DATABASE as string,
     sorts: [
       {
@@ -98,6 +79,3 @@ export function cleanScheduleRow(response: QueryDatabaseResponse) {
   return data;
 }
 
-export function sum(a: number, b: number) {
-  return a + b;
-}

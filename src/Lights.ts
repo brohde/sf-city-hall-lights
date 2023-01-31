@@ -6,8 +6,6 @@ interface ShortcutsResponse {
   say: string
 }
 
-
-
 /**
  * Reads from Notion schedule page 
  * @returns 
