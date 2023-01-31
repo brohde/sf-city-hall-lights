@@ -36,8 +36,8 @@ cp .env.example .env
 
 ## Additional dependencies
 1. Access to Notion database, and application keys. See:
-* https://www.notion.so/my-integrations
-* https://www.notion.so/my-integrations/internal/ac0d3fd3354349d0883d7706b562cec3
+   * https://www.notion.so/my-integrations
+   * https://www.notion.so/my-integrations/internal/ac0d3fd3354349d0883d7706b562cec3
 
 ## Local commands
 
