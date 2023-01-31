@@ -1,1 +1,4 @@
 - [ ] yarn commands similiar to react create project (start, build, watch, test)
+- [ ] Github / Set up CI checkls
+  - [ ] Tests passing, API connection (smoke test?)
+  - [ ]
